@@ -1,6 +1,8 @@
 import services from '../services';
 import ProductsController from './ProductsController';
+import SalesController from './SalesController';
 
 export default {
-  products: new ProductsController(services.ProductsService),
+  ProductsController: new ProductsController(services.ProductsService),
+  SalesController: new SalesController(services.SalesService),
 };

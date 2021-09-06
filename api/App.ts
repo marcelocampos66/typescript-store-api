@@ -25,7 +25,8 @@ class App {
   }
 
   private callRouters() {
-    this.app.use('/products', this.controllers.products.router);
+    this.app.use('/products', this.controllers.ProductsController.router);
+    this.app.use('/sales', this.controllers.SalesController.router);
   }
 
   private handleErrors() {

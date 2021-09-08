@@ -41,7 +41,7 @@ class Middlewares {
 
   public verifyProductExists = async (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction,
   ) => {
     const { body: { name } } = req;
@@ -64,6 +64,22 @@ class Middlewares {
     const productExists = await this.models.ProductsModel.getProductById(id);
     if (!productExists) {
       return next({ status: 404, message: 'Product dont exists' });
+    }
+    return next();
+  };
+
+  public verifySaleId = async (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    const { params: { id } } = req;
+    if (!ObjectId.isValid(id)) {
+      return next({ status: 403, message: 'Invalid Id' });
+    }
+    const saleExists = await this.models.SalesModel.getSaleById(id);
+    if (!saleExists) {
+      return next({ status: 404, message: 'Sale dont exists' });
     }
     return next();
   };

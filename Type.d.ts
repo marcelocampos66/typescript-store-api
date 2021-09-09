@@ -35,3 +35,8 @@ interface ISaleProduct {
   id: string;
   quantity: number;
 }
+
+interface ISale {
+  products: Array<ISaleProduct>;
+  totalPrice: string;
+}

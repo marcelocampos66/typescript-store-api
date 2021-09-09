@@ -1,6 +1,6 @@
 import Connection from './Connection';
 import { ObjectId } from 'mongodb';
-import { IProductEntries } from '../Type';
+import { INewQuatity, IProductEntries } from '../Type';
 
 class ProductsModel extends Connection {
   constructor(){
@@ -29,16 +29,33 @@ class ProductsModel extends Connection {
   }
 
   public async updateProduct(id: string, newInfos: IProductEntries) {
-    return this.connection().then((db) => db.collection('products').updateOne(
-      { _id: new ObjectId(id) },
-      { $set: newInfos },
-    ))
+    return this.connection()
+      .then((db) => db.collection('products').updateOne(
+        { _id: new ObjectId(id) },
+        { $set: newInfos },
+      ));
+  }
+
+  public async updateProductQuantity(id: string, newQuantity: number) {
+    return this.connection()
+      .then((db) => db.collection('products').updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { quantity: newQuantity } },
+      ));
   }
 
   public async deleteProduct(id: string) {
     return this.connection()
       .then((db) => db.collection('products')
       .deleteOne({ _id: new ObjectId(id) }));
+  }
+
+  public async getAllProductsFromSale(ids: Array<string>) {
+    const objIdArray = ids.map((id) => ( new ObjectId(id) ));
+    return this.connection()
+      .then((db) => db.collection('products').find({
+        _id: { $in: objIdArray },
+      }).toArray());
   }
 
 }

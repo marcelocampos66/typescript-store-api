@@ -1,5 +1,6 @@
 import Connection from "./Connection";
 import { ObjectId } from "mongodb";
+import { ISale } from "../Type";
 
 class SalesModel extends Connection {
   constructor(){
@@ -16,9 +17,23 @@ class SalesModel extends Connection {
       .then((db) => db.collection('sales').findOne({ _id: new ObjectId(id) }));
   }
 
-  public async registerSale() {
+  public async registerSale(sale: ISale) {
     return this.connection()
-      .then((db) => db.collection('sales').insertOne({}));
+      .then((db) => db.collection('sales').insertOne(sale))
+      .then((result) => result);
+  }
+
+  public async updateSale(id: string, newInfos: ISale) {
+    return this.connection()
+      .then((db) => db.collection('sales').updateOne(
+        { _id: new ObjectId(id) },
+        { $set: newInfos },
+      ));
+  }
+
+  public async deleteSale(id: string) {
+    return this.connection()
+      .then((db) => db.collection('sales').deleteOne({ _id: new ObjectId(id) }));
   }
 
 }
